@@ -13,9 +13,10 @@ def get_subdomain_passive(domain):
                 print(f"[!] API Error ")
                 return []
             subdomain=set()
+            lines=response.text.splitlines()
+            total=len(lines)
             for i,line in enumerate(response.text.splitlines(),start=1):
                 sub=line.split(",")[0]
-                total=len(sub)
                 progress(i,total)
                 subdomain.add(sub.strip())
             return list(subdomain)

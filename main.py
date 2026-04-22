@@ -12,7 +12,7 @@ def main():
     print(f"[+] Starting Recon(passive) on: {domain}")
     print("\n[+] Finding Subdomains...")
     subs=get_subdomain_passive(domain)
-    print(f"Subdomain Found: {len(subs)} subdomains...")
+    print(f"\nSubdomain Found: {len(subs)} subdomains...")
     if len(subs)!=0:
      for i in range(len(subs)):
       print(f"{i+1}) {subs[i]}")
@@ -33,14 +33,14 @@ def main():
     for host in live:
        domains=host["domain"]
        ports=scan_ports(domains)
-    final_result.append({
-      "domain": domains,
-      "status": host["status"],
-      "server": host.get("server"),
-      "port": ports
-      })
-    with open("result.json","w") as f:
-       json.dump(final_result,f,indent=4)
+       final_result.append({
+          "domain": domains,
+          "status": host["status"],
+          "server": host.get("server"),
+          "port": ports
+        })
+       with open("result.json","w") as f:
+         json.dump(final_result,f,indent=4)
     print("\n [+] Final result saved to result.json")
 if __name__=="__main__":
     main()
