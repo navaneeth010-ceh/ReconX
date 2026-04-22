@@ -1,4 +1,3 @@
-# ReconX
 # 🔎 ReconX – Automated Web Recon Tool
 
 ReconX is a Python-based automated reconnaissance tool designed to map a target's attack surface by performing subdomain enumeration, live host detection, and port scanning.
