@@ -1,18 +1,54 @@
 import requests
-def get_subdomain(domain):
-    url=f"https://crt.sh/?q=%25.{domain}&output=json"
+import time
+import dns.resolver
+from graph import progress
+from concurrent.futures import ThreadPoolExecutor,as_completed
+def get_subdomain_passive(domain):
+    url=f"https://api.hackertarget.com/hostsearch/?q={domain}"
+    headers = {"User-Agent": "Mozilla/5.0"}
+    for attempt in range(3):
+        try:
+            response=requests.get(url,headers=headers,timeout=10)
+            if "error" in response.text.lower():
+                print(f"[!] API Error ")
+                return []
+            subdomain=set()
+            for i,line in enumerate(response.text.splitlines(),start=1):
+                sub=line.split(",")[0]
+                total=len(sub)
+                progress(i,total)
+                subdomain.add(sub.strip())
+            return list(subdomain)
+        except Exception as e:
+            print(f"[RETRY {attempt+1} Error: {e}]")
+            print("[ERROR] Failed after retries")
+            return []
+def loadwordlist(filepath):
+    with open(filepath,"r") as f:
+        return [line.strip() for line in f if line.strip()]
+    
+def checksubdomain(sub,domain):
+    fulldomain=f"{sub}.{domain}"
+    resolver=dns.resolver.Resolver()
+    resolver.timeout=2;
+    resolver.lifetime=2;
     try:
-       response=requests.get(url,timeout=10)
-       data=response.json()
-       subdomains=set()
-       for entry in data:
-            name=entry.get("name_value")
-            if name:
-                for sub in name.split("\n"):
-                    subdomains.add(sub.strip())
-                    if domain in sub:
-                        subdomains.add(sub.strip())
-       return subdomains.list()
-    except Exception as e:
-        print(f"[ERROR] Subdomain fetch fail: {e}")
-        return[]
+        resolver.resolve(fulldomain,'A')
+        print(f"[+] Found: {fulldomain}")
+        return fulldomain
+    except:
+        return None
+def get_subdomain_active(domain,wordlist):
+    subdomain=loadwordlist(wordlist)
+    total=len(subdomain)
+    found=[]
+    with ThreadPoolExecutor(max_workers=20) as excecutor:
+        futures=[excecutor.submit(checksubdomain,sub,domain)
+                 for sub in subdomain
+        ]
+        for i,future in enumerate(as_completed(futures),start=1):
+            progress(i,total)                                            
+            result=future.result()
+            if result:
+                found.append(result)
+    return list(set(found))
