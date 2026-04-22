@@ -44,7 +44,7 @@ JSON Report
 ## 📦 Installation
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/reconx.git
+git clone https://github.com/navaneeth010-ceh/ReconX.git
 cd reconx
 python3 -m venv venv
 source venv/bin/activate
