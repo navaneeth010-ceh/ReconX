@@ -4,7 +4,9 @@ from subdomain import get_subdomain_passive
 from subdomain import get_subdomain_active
 from portscan import scan_ports
 from livehost import probe_all
+from banner import banner
 def main():
+    banner()
     if len(sys.argv)!=2:
         print("Usage: python main.py example.com")
         return
