@@ -17,6 +17,7 @@ ReconX is a Python-based automated reconnaissance tool designed to map a target'
 
 ## 🧠 Workflow
 
+```
 Target Domain
       ↓
 Subdomain Enumeration (Passive + Active)
@@ -26,6 +27,7 @@ Live Host Detection
 Port Scanning
       ↓
 JSON Report
+```
 
 ---
 
@@ -36,14 +38,16 @@ JSON Report
 * dnspython
 * socket
 * concurrent.futures
-  
+
 ---
 
 ## 📦 Installation
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/reconx.git
+git clone https://github.com/navaneeth010-ceh/ReconX.git
 cd reconx
+python3 -m venv venv
+source venv/bin/activate
 pip install -r requirements.txt
 ```
 
@@ -92,7 +96,7 @@ Do NOT use this tool on systems you do not own or have explicit permission to te
 
 ## 👨‍💻 Author
 
-Navaneeth
+Navaneeth Krishna
 
 ---
 
