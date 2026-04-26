@@ -1,3 +1,1 @@
-requests
-dnspython
-rich
+requests dnspython rich
